@@ -3,8 +3,7 @@ from selenium.webdriver.common.by import By
 import os
 from time import sleep
 
-input_produto = input('Digite o produto: ')
-input_produto = input_produto.replace(' ', '-')
+input_produto = input('Digite o produto: ').replace(' ', '-')
 
 # 1 passo - Entrar no site
 driver = webdriver.Chrome()
@@ -12,6 +11,7 @@ driver.get(f'https://lista.mercadolivre.com.br/{input_produto}')
 sleep(5)
 
 cards = driver.find_elements(By.XPATH, '//div[@class="ui-search-result__wrapper"]')
+
 
 # Loop para iterar sobre cada card
 for card in cards:
@@ -21,7 +21,7 @@ for card in cards:
     link = produto.get_attribute("href")  # O link está dentro do produto
 
 # Escreve os dados no arquivo
-    with open('mercado_livre.csv', 'a', encoding='utf-8') as arquivo:
+    with open(f'{input_produto.replace('-', ' ')}.csv', 'a', encoding='utf-8') as arquivo:
         arquivo.write(f'{produto.text}, {preco.text}, {link}{os.linesep}')
 
 driver.quit()
