@@ -1,0 +1,43 @@
+import requests
+from bs4 import BeautifulSoup
+import os
+
+headers = {
+    'USer-Agent': 
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36'
+}
+
+input_produto = input('Digite o produto: ') #Usuario digita o nome do produto
+input_produto = input_produto.replace(' ', '-') #Trocas os espaços por "-"
+
+url = f'https://lista.mercadolivre.com.br/{input_produto}_Desde_' #URL do site
+
+start = 1
+
+
+
+
+while True:
+
+    url_final = url + str(start) + '_NoIndex_True'
+
+        #Fazer requisicao
+    r = requests.get(url, headers=headers)
+        
+    site = BeautifulSoup(r.content, 'html.parser')
+
+        #Encontrar resultados 
+    cards = site.find_all('li', class_='ui-search-layout__item')
+
+    for card in cards:
+
+        titulo = card.find('a', class_='poly-component__title') #Pega o titulo
+        preco = card.find('span', class_='andes-money-amount andes-money-amount--cents-superscript').find('span', 'andes-money-amount__fraction')
+        nota_avaliacao = card.find('div', class_='poly-component__reviews')
+        link = card.find('a', class_='poly-component__title')
+
+        with open(f'{input_produto.replace('-', ' ')}.csv', 'a', encoding='utf-8') as arquivo:
+                arquivo.write(f'{titulo.get_text()}, {preco.get_text()}, {link.get('href')}{os.linesep}')
+        
+
+    
