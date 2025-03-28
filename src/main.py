@@ -1,4 +1,6 @@
 from utils.Mercado_livre import buscar
 
-
-buscar('ps5')
+if '__main__' == __name__:
+    PRODUTOS = buscar('ps5')
+    for produto in PRODUTOS:
+        print(produto)
