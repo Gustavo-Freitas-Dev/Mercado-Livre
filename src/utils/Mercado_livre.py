@@ -50,6 +50,7 @@ def _raspagem(html:str) -> list[dict]:
         'discount': 'div.poly-component__price span.andes-money-amount__discount'
     }
 
+    # captura dos valores
     for card in CARDS_HTML:
         CARD = {}
         for selector in set(CARD_SELECTOR.keys()): 
@@ -58,6 +59,7 @@ def _raspagem(html:str) -> list[dict]:
 
         CARDS.append(CARD)
 
+    # tratamento dos valores
     for card in CARDS:
         for key in set(card.keys()):
             card[key] = card[key][0].text if card[key] != [] else ''
