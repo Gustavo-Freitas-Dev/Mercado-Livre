@@ -1,5 +1,5 @@
 import requests
-# from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup
 
 
 
@@ -17,7 +17,7 @@ def buscar(item:str) -> list[object]:
         response = requests.get(url, headers=HEADERS)
         if response.status_code == 200:
             html = response.text
-            RESP += _raspagem(html)
+            # RESP += _raspagem(html)
             url = _paginar(html)
         
         if url == '':
@@ -28,12 +28,17 @@ def buscar(item:str) -> list[object]:
 
 def _paginar(html) -> str:
     '''Verifica a existencia de uma proxima pagina e retorna o link dela'''
-    ...
+    
+
+    html = BeautifulSoup(html, 'html.parser')
+    next_url = html.select('li.andes-pagination__button.andes-pagination__button--next > a')[0].get("href", "")
+    return next_url
 
 
 def _raspagem(html:str) -> list[object]:
     '''Faz a raspagem dos dados no HTML'''
     ...
+
 
 def csv():
     '''Converte o resultado para CSV'''
